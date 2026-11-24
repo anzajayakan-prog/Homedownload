@@ -2,7 +2,7 @@
 <html lang="id" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <title>zWeb</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -384,6 +384,8 @@ html.ct *,html.ct *::before,html.ct *::after{transition:background-color .9s eas
 .tt-res{animation:rise .8s var(--e) backwards}
 .tt-btns .btn{animation:rise .7s var(--e) backwards;animation-delay:calc(.15s + var(--k)*.08s)}
 /* ---------- Global Chat ---------- */
+#sh-chat{backdrop-filter:none;-webkit-backdrop-filter:none;bottom:auto;height:100vh;height:100dvh;box-sizing:border-box;background:radial-gradient(circle at 12% 8%,var(--b1),transparent 46%),radial-gradient(circle at 92% 88%,var(--b3),transparent 46%),radial-gradient(circle at 85% 30%,var(--b2),transparent 40%),var(--bg)}
+#sh-chat .fi,#sh-chat #ch-in{-webkit-user-select:text;user-select:text;touch-action:manipulation;-webkit-appearance:none}
 #sh-chat .sh-body{display:flex;flex-direction:column;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);overflow:hidden;max-width:640px}
 #sh-chat .sh-head{gap:10px;max-width:640px}#sh-chat .sh-head h2{font-size:21px;white-space:nowrap}
 #sh-chat .tbtn{width:40px;height:40px}#sh-chat .tbtn.on{color:var(--acc)}
@@ -505,8 +507,8 @@ html.ct *,html.ct *::before,html.ct *::after{transition:background-color .9s eas
 </div></section>
 <section class="sheet" id="sh-chat" data-t="Global Chat"><div class="sh-body">
   <div id="ch-gate" class="card"><h2>Pilih username</h2><p class="d">Username tampil di setiap pesanmu. Gunakan 2–20 karakter: huruf, angka, spasi, _ . -</p>
-    <input class="fi" id="ch-name" maxlength="20" placeholder="Username" autocomplete="off">
-    <button class="btn flat" id="ch-join" style="margin-top:12px">Mulai ngobrol</button></div>
+    <input class="fi" id="ch-name" type="text" maxlength="20" placeholder="Username" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="text" enterkeyhint="go">
+    <button class="btn flat" id="ch-join" style="margin-top:12px">Mulai ngobrol</button><button class="btn sec" id="ch-rand" style="margin-top:10px">Pakai nama acak</button></div>
   <div id="ch-room">
     <div id="ch-list"></div>
     <button id="ch-new">↓ Pesan baru</button>
@@ -946,10 +948,10 @@ async function chRealtime(){
         else if(['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(st)){chRt=false;chStatus()}})
   }catch(e){chRt=false;chChan=null;chStatus()}}
 function chGate(g){$('ch-gate').style.display=g?'block':'none';$('ch-room').style.display=g?'none':'flex'}
-function chVV(){const v=window.visualViewport,el=$('sh-chat');if(!v)return;el.style.bottom='auto';el.style.top=v.offsetTop+'px';el.style.height=v.height+'px'}
+function chVV(){const v=window.visualViewport;if(!v)return;$('sh-chat').style.paddingBottom=Math.max(0,Math.round(innerHeight-v.height-v.offsetTop))+'px'}
 function chOpen(){
   $('ch-name').value=chUser;
-  if(window.visualViewport){chVVf=chVV;visualViewport.addEventListener('resize',chVVf);visualViewport.addEventListener('scroll',chVVf);chVV()}
+  if(window.visualViewport){chVVf=chVV;visualViewport.addEventListener('resize',chVVf);chVV()}
   if(!chUser){chGate(true);return}
   chEnter()}
 async function chEnter(){
@@ -959,8 +961,8 @@ async function chEnter(){
 function chClose(){
   clearInterval(chPoll);if(chSb&&chChan){try{chSb.removeChannel(chChan)}catch(e){}}
   chChan=null;chSb=null;chRt=false;
-  if(chVVf){visualViewport.removeEventListener('resize',chVVf);visualViewport.removeEventListener('scroll',chVVf);chVVf=null}
-  const el=$('sh-chat');el.style.height=el.style.top=el.style.bottom=''}
+  if(chVVf){visualViewport.removeEventListener('resize',chVVf);chVVf=null}
+  $('sh-chat').style.paddingBottom=''}
 function chNotify(m){
   if(!document.hidden)return;chHid++;document.title='('+chHid+') Global Chat';
   if(chNotif&&window.Notification&&Notification.permission==='granted'){try{new Notification('Global Chat · '+m.username,{body:m.content})}catch(e){}}}
@@ -1008,6 +1010,8 @@ $('ch-join').onclick=()=>{
   chUser=n;try{localStorage.setItem('zw_user',n)}catch(e){}
   if(chChan&&chRt)chChan.track({u:chUser,t:Date.now()}).catch(()=>{});
   chEnter()};
+$('ch-rand').onclick=()=>{$('ch-name').value='Tamu'+Math.floor(1000+Math.random()*9000);$('ch-join').click()};
+$('ch-gate').addEventListener('click',e=>{if(!e.target.closest('button,input'))$('ch-name').focus()});
 $('ch-name').onkeydown=e=>{if(e.key==='Enter')$('ch-join').click()};
 /* tombol di header: online, notifikasi, ganti username */
 (function(){const h=document.querySelector('#sh-chat .sh-head');
