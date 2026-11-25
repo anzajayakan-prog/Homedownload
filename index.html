@@ -446,7 +446,7 @@ html.ct *,html.ct *::before,html.ct *::after{transition:background-color .9s eas
 @media(prefers-reduced-motion:reduce){#ad-pop,#ad-card{transition:none}#ad-card:before{animation:none}}
 
 
-/* ---------- promo kedua: Instagram Suntik SL & Nokos ---------- */
+/* ---------- promo kedua: TikTok Suntik SL & Nokos ---------- */
 #ig-pop{position:fixed;inset:0;z-index:141;display:grid;place-items:center;padding:22px;background:rgba(0,0,0,.68);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);opacity:0;visibility:hidden;transition:opacity .65s var(--e),backdrop-filter .65s var(--e),visibility 0s linear .65s}
 #ig-pop.show{opacity:1;visibility:visible;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition-delay:0s}
 #ig-card{position:relative;width:min(100%,390px);padding:13px;border-radius:30px;background:linear-gradient(150deg,rgba(38,15,19,.98),rgba(12,12,16,.97));border:1px solid rgba(255,80,90,.32);box-shadow:0 28px 90px rgba(0,0,0,.65),inset 0 1px rgba(255,255,255,.16);transform:translateY(28px) scale(.94);opacity:0;transition:transform .8s var(--e),opacity .65s var(--e);overflow:hidden}
@@ -593,8 +593,8 @@ html.ct *,html.ct *::before,html.ct *::after{transition:background-color .9s eas
     <div id="ig-content">
       <span id="ig-tag">Suntik SL · Nokos</span>
       <h2 id="ig-title">Jangan ketinggalan update!</h2>
-      <p>Follow akun Instagram <strong>@suntiksl.and.nokos</strong> untuk melihat info dan update terbaru.</p>
-      <a id="ig-follow" href="https://www.instagram.com/suntiksl.and.nokos/" target="_blank" rel="noopener noreferrer"><span>Kunjungi Instagram</span><span aria-hidden="true">↗</span></a>
+      <p>Follow TikTok <strong>@suntiksl.and.nokos</strong> untuk melihat info dan update terbaru.</p>
+      <a id="ig-follow" href="https://www.tiktok.com/@suntiksl.and.nokos" target="_blank" rel="noopener noreferrer"><span>Kunjungi TikTok</span><span aria-hidden="true">↗</span></a>
       <button id="ig-later" type="button">Mungkin nanti</button>
     </div>
   </div>
@@ -608,7 +608,7 @@ const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const go=$('go');
 setTimeout(()=>go.classList.add('show'),3800);
 go.onclick=()=>{$('intro').classList.add('out');$('app').classList.add('in');setTimeout(()=>$('intro').remove(),1100)};
-/* promo saluran WhatsApp: tampil setelah halaman utama terbuka */
+/* promo berurutan: WhatsApp lalu TikTok setelah pop-up pertama ditutup */
 const adPop=$('ad-pop'),igPop=$('ig-pop');
 let igTimer;
 function openIg(){igPop.classList.add('show');igPop.setAttribute('aria-hidden','false')}
